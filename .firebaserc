@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "vamsee-training": {
+      "hosting": {
+        "inventory-management": [
+          "vamsee-training"
+        ]
+      }
+    }
+  }
+}
