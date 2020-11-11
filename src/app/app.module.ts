@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
-import {AppRoutingModule} from './app-routing.module';
+import {AppRoutingModule, pages} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AngularFireModule} from '@angular/fire';
@@ -30,10 +30,12 @@ import {TooltipModule} from 'ngx-bootstrap/tooltip';
 import {TypeaheadModule} from 'ngx-bootstrap/typeahead';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 
+
+
 @NgModule({
   declarations: [
-    AppComponent
-
+    AppComponent,
+    ...pages
   ],
   entryComponents: [],
   imports: [

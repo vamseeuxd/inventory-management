@@ -12,6 +12,7 @@ import {MatMenuTrigger} from '@angular/material/menu';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  isMenuOpened = false;
 
 
 
