@@ -12,6 +12,7 @@ import { ItemSuppliersComponent } from './pages/item-suppliers/item-suppliers.co
 import { StateComponent } from './pages/state/state.component';
 import { SupplierAddressesComponent } from './pages/supplier-addresses/supplier-addresses.component';
 import { SuppliersComponent } from './pages/suppliers/suppliers.component';
+import {UsersComponent} from './pages/users/users.component';
 
 export const pages = [
   AddressComponent,
@@ -26,6 +27,7 @@ export const pages = [
   StateComponent,
   SupplierAddressesComponent,
   SuppliersComponent,
+  UsersComponent,
 ];
 
 const routes: Routes = [
@@ -41,6 +43,7 @@ const routes: Routes = [
   { component: StateComponent, path: 'state' },
   { component: SupplierAddressesComponent, path: 'supplier-addresses' },
   { component: SuppliersComponent, path: 'suppliers' },
+  { component: UsersComponent, path: 'users' },
   { path: '', redirectTo: 'countries', pathMatch: 'full' },
 ];
 

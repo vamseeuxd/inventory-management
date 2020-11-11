@@ -1,1 +1,93 @@
-<p>countries works!</p>
+<div class="row mt-3">
+  <div class="col-8 mb-3">
+    <h4 class="mt-2 pb-2">Countries</h4>
+  </div>
+  <div class="col-4 mb-3 text-right">
+    <button class="btn-link btn" (click)="addNewCountryModal.show()">Add Country</button>
+  </div>
+</div>
+
+
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>#</th>
+    <!--<th>Id</th>-->
+    <th>Name</th>
+    <th class="text-center">Actions</th>
+  </tr>
+  </thead>
+  <tbody *ngIf="countriesService.getCountries() | async as countries">
+  <tr *ngFor="let country of countries; let ind = index">
+    <th scope="row">{{ind+1}}</th>
+    <!--<td>{{country.id}}</td>-->
+    <td>{{country.name}}</td>
+    <td class="text-center">
+      <button class="btn btn-danger mr-3" (click)="deleteCountries(country)"><i
+        class="fa fa-trash"></i></button>
+      <button class="btn btn-warning" (click)="countryToEdit=country;updateCountryModal.show()"><i
+        class="fa fa-edit"></i></button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div class="modal fade" bsModal #addNewCountryModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+     role="dialog" aria-labelledby="dialog-static-name">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-static-name" class="modal-title pull-left">Add New Country</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="addNewCountryModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #addNewCountryForm="ngForm">
+          <div class="form-group">
+            <label for="countryName">Country Name</label>
+            <input autocomplete="off" type="text" name="name" minlength="3" maxlength="30" required ngModel
+                   class="form-control" id="countryName">
+            <small class="form-text text-muted">Country Name is required and in between 3 to 30 Charters.</small>
+          </div>
+          <div class="w-100 text-right">
+            <button (click)="addCountries(addNewCountryForm.value, addNewCountryForm, addNewCountryModal)" [disabled]="addNewCountryForm.invalid" type="submit" class="mr-2 btn btn-primary ">Save & Close</button>
+            <button (click)="addCountries(addNewCountryForm.value, addNewCountryForm)" [disabled]="addNewCountryForm.invalid" type="submit" class="btn btn-primary ">Save & Add New</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" bsModal #updateCountryModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+     role="dialog" aria-labelledby="dialog-static-name">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Update Country</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="updateCountryModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #updateCountryForm="ngForm">
+          <div class="form-group">
+            <label for="countryNameToUpdate">Country Name</label>
+            <input autocomplete="off" type="text" name="name" minlength="3" maxlength="30" required
+                   [ngModel]="countryToEdit.name"
+                   class="form-control" id="countryNameToUpdate">
+            <small class="form-text text-muted">Country Name is required and in between 3 to 30 Charters.</small>
+            <input type="hidden" name="id" [ngModel]="countryToEdit.id">
+          </div>
+          <div class="w-100 text-right">
+            <button (click)="updateCountries(updateCountryForm.value,updateCountryForm,updateCountryModal)"
+                    [disabled]="updateCountryForm.invalid" type="submit" class="btn btn-primary ">Update
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

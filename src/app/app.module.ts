@@ -29,6 +29,7 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [AppComponent, ...pages],
@@ -60,6 +61,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     TooltipModule.forRoot(),
     TypeaheadModule.forRoot(),
     AlertModule.forRoot(),
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent],
