@@ -56,6 +56,7 @@ export class CountriesComponent implements OnInit {
       await this.countriesService.updateCountries(value);
       form.resetForm({});
       modal.hide();
+      this.countryToEdit = {name: '', deleted: false, id: ''};
       this._snackBar.open('Country Updated Successfully', 'Success', {
         duration: 2000,
       });

@@ -8,6 +8,7 @@ import {BusyIndicatorService} from '../../../shared/busy-indicator/busy-indicato
 export interface ICountry {
   name: string;
   id?: string;
+  countryId?: string;
   deleted: boolean;
   createdOn?: string;
   updatedOn?: string;
@@ -21,7 +22,7 @@ export interface ICountry {
 export class CountriesService {
 
   private countriesAction: AngularFirestoreCollection<ICountry>;
-  private readonly countries$: Observable<ICountry[]>;
+  readonly countries$: Observable<ICountry[]>;
   private activeUser: string;
 
   constructor(

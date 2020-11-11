@@ -1,1 +1,107 @@
-<p>state works!</p>
+<div class="row mt-3">
+  <div class="col-8 mb-3">
+    <h4 class="mt-2 pb-2">States</h4>
+  </div>
+  <div class="col-4 mb-3 text-right">
+    <button class="btn-link btn" (click)="addNewStateModal.show()">Add State</button>
+  </div>
+</div>
+
+
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>#</th>
+    <!--<th>Id</th>-->
+    <th>Name</th>
+    <th>Country Name</th>
+    <th class="text-center">Actions</th>
+  </tr>
+  </thead>
+  <tbody *ngIf="stateService.getStates() | async as states">
+  <tr *ngFor="let state of states; let ind = index">
+    <th scope="row">{{ind+1}}</th>
+    <!--<td>{{state.id}}</td>-->
+    <td>{{state.name}}</td>
+    <td>{{state.countryName}}</td>
+    <td class="text-center">
+      <button class="btn btn-danger mr-3" (click)="deleteState(state)"><i
+        class="fa fa-trash"></i></button>
+      <button class="btn btn-warning" (click)="stateToEdit=state;updateStateModal.show()"><i
+        class="fa fa-edit"></i></button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div class="modal fade" bsModal #addNewStateModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+     role="dialog" aria-labelledby="dialog-static-name">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-static-name" class="modal-title pull-left">Add New State</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="addNewStateModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #addNewStateForm="ngForm">
+          <div class="form-group" *ngIf="countriesService.getCountries() | async as countries">
+            <label for="countryId">Country</label>
+            <select type="text" name="countryId" required ngModel class="form-control" id="countryId">
+              <option *ngFor="let country of countries" [ngValue]="country.id">{{country.name}}</option>
+            </select>
+            <small class="form-text text-muted">Select Country for State.</small>
+          </div>
+          <div class="form-group">
+            <label for="stateName">State Name</label>
+            <input autocomplete="off" type="text" name="name" minlength="3" maxlength="30" required ngModel
+                   class="form-control" id="stateName">
+            <small class="form-text text-muted">State Name is required and in between 3 to 30 Charters.</small>
+          </div>
+          <div class="w-100 text-right">
+            <button (click)="addState(addNewStateForm.value, addNewStateForm, addNewStateModal)" [disabled]="addNewStateForm.invalid" type="submit" class="mr-2 btn btn-primary ">Save & Close</button>
+            <button (click)="addState(addNewStateForm.value, addNewStateForm)" [disabled]="addNewStateForm.invalid" type="submit" class="btn btn-primary ">Save & Add New</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" bsModal #updateStateModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1"
+     role="dialog" aria-labelledby="dialog-static-name">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Update State</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="updateStateModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #updateStateForm="ngForm">
+          <div class="form-group" *ngIf="countriesService.getCountries() | async as countries">
+            <label for="countryIdToUpdate">Country</label>
+            <select type="text" name="countryId" required [ngModel]="stateToEdit.countryId" class="form-control" id="countryIdToUpdate">
+              <option *ngFor="let country of countries" [ngValue]="country.id">{{country.name}}</option>
+            </select>
+            <small class="form-text text-muted">Select Country for State.</small>
+          </div>
+          <div class="form-group">
+            <label for="stateNameToUpdate">State Name</label>
+            <input autocomplete="off" type="text" name="name" minlength="3" maxlength="30" required [ngModel]="stateToEdit.name" class="form-control" id="stateNameToUpdate">
+            <small class="form-text text-muted">State Name is required and in between 3 to 30 Charters.</small>
+            <input type="hidden" name="id" [ngModel]="stateToEdit.id">
+          </div>
+          <div class="w-100 text-right">
+            <button (click)="updateState(updateStateForm.value,updateStateForm,updateStateModal)"
+                    [disabled]="updateStateForm.invalid" type="submit" class="btn btn-primary ">Update
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
