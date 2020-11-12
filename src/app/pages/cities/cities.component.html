@@ -1,1 +1,249 @@
-<p>cities works!</p>
+<div class="row mt-3">
+  <div class="col-8 mb-3">
+    <h4 class="mt-2 pb-2">Cities</h4>
+  </div>
+  <div class="col-4 mb-3 text-right">
+    <button class="btn-link btn" (click)="addNewCityModal.show()">
+      Add City
+    </button>
+  </div>
+</div>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>#</th>
+      <!--<th>Id</th>-->
+      <th>Name</th>
+      <th>Country Name</th>
+      <th>State Name</th>
+      <th class="text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="cityService.getCities() | async as cities">
+    <tr *ngFor="let city of cities; let ind = index">
+      <th scope="row">{{ ind + 1 }}</th>
+      <td>{{ city.name }}</td>
+      <td>{{ city.country.name }}</td>
+      <td>{{ city.state.name }}</td>
+      <td class="text-center">
+        <button class="btn btn-danger mr-3" (click)="deleteCity(city)">
+          <i class="fa fa-trash"></i>
+        </button>
+        <button
+          class="btn btn-warning"
+          (click)="cityToEdit = city; updateCityModal.show()"
+        >
+          <i class="fa fa-edit"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div
+  class="modal fade"
+  bsModal
+  #addNewCityModal="bs-modal"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="dialog-static-name"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-static-name" class="modal-title pull-left">
+          Add New City
+        </h4>
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="addNewCityModal.hide()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #addNewCityForm="ngForm">
+          <div
+            class="form-group"
+            *ngIf="countriesService.getCountries() | async as countries"
+          >
+            <label for="country">Country</label>
+            <select
+              type="text"
+              name="country"
+              required
+              ngModel
+              (change)="selectedCountry$.next($event.target.value)"
+              class="form-control"
+              id="country"
+            >
+              <option *ngFor="let country of countries" [value]="country.id">
+                {{ country.name }}
+              </option>
+            </select>
+            <small class="form-text text-muted">Select Country for City.</small>
+          </div>
+          <div class="form-group" *ngIf="statesList$ | async as states">
+            <label for="country">State</label>
+            <select
+              type="text"
+              name="state"
+              required
+              ngModel
+              class="form-control"
+              id="state"
+            >
+              <option *ngFor="let state of states" [ngValue]="state.id">
+                {{ state.name }}
+              </option>
+            </select>
+            <small class="form-text text-muted">Select State for City.</small>
+          </div>
+          <div class="form-group">
+            <label for="cityName">City Name</label>
+            <input
+              autocomplete="off"
+              type="text"
+              name="name"
+              minlength="3"
+              maxlength="30"
+              required
+              ngModel
+              class="form-control"
+              id="cityName"
+            />
+            <small class="form-text text-muted"
+              >City Name is required and in between 3 to 30 Charters.</small
+            >
+          </div>
+          <div class="w-100 text-right">
+            <button
+              (click)="
+                addCity(addNewCityForm.value, addNewCityForm, addNewCityModal)
+              "
+              [disabled]="addNewCityForm.invalid"
+              type="submit"
+              class="mr-2 btn btn-primary"
+            >
+              Save & Close
+            </button>
+            <button
+              (click)="addCity(addNewCityForm.value, addNewCityForm)"
+              [disabled]="addNewCityForm.invalid"
+              type="submit"
+              class="btn btn-primary"
+            >
+              Save & Add New
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  bsModal
+  #updateCityModal="bs-modal"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="dialog-static-name"
+>
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Update City</h4>
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="updateCityModal.hide()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #updateCityForm="ngForm" *ngIf="cityToEdit && cityToEdit.country">
+          <div
+            class="form-group"
+            *ngIf="countriesService.getCountries() | async as countries"
+          >
+            <label for="countryToUpdate">Country</label>
+            <select
+              type="text"
+              name="country"
+              required
+              [ngModel]="cityToEdit.country.id"
+              class="form-control"
+              id="countryToUpdate"
+            >
+              <option *ngFor="let country of countries" [ngValue]="country.id">
+                {{ country.name }}
+              </option>
+            </select>
+            <small class="form-text text-muted">Select Country for City.</small>
+          </div>
+          <div
+            class="form-group"
+            *ngIf="stateService.getStates() | async as states"
+          >
+            <label for="countryToUpdate">State</label>
+            <select
+              type="text"
+              name="state"
+              required
+              [ngModel]="cityToEdit.state.id"
+              class="form-control"
+              id="stateToUpdate"
+            >
+              <option *ngFor="let state of states" [ngValue]="state.id">
+                {{ state.name }}
+              </option>
+            </select>
+            <small class="form-text text-muted">Select State for City.</small>
+          </div>
+          <div class="form-group">
+            <label for="cityNameToUpdate">City Name</label>
+            <input
+              autocomplete="off"
+              type="text"
+              name="name"
+              minlength="3"
+              maxlength="30"
+              required
+              [ngModel]="cityToEdit.name"
+              class="form-control"
+              id="cityNameToUpdate"
+            />
+            <small class="form-text text-muted"
+              >City Name is required and in between 3 to 30 Charters.</small
+            >
+            <input type="hidden" name="id" [ngModel]="cityToEdit.id" />
+          </div>
+          <div class="w-100 text-right">
+            <button
+              (click)="
+                updateCity(
+                  updateCityForm.value,
+                  updateCityForm,
+                  updateCityModal
+                )
+              "
+              [disabled]="updateCityForm.invalid"
+              type="submit"
+              class="btn btn-primary"
+            >
+              Update
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
