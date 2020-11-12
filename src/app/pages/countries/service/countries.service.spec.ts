@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing'
 
-import { CountriesService } from './countries.service';
+import { CountriesService } from './countries.service'
 
 describe('CountriesService', () => {
-  let service: CountriesService;
+  let service: CountriesService
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(CountriesService);
-  });
+    TestBed.configureTestingModule({})
+    service = TestBed.inject(CountriesService)
+  })
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+    expect(service).toBeTruthy()
+  })
+})

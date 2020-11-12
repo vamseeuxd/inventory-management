@@ -13,7 +13,7 @@ export const environment = {
     messagingSenderId: '1015324985520',
     appId: '1:1015324985520:web:f8b727ba8ff005421a5375',
   },
-};
+}
 
 /*
  * For easier debugging in development mode, you can import the following file
